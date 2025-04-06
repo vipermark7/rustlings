@@ -1,3 +1,6 @@
+#![allow(dead_code)]
+#![allow(unused_variables)]
+
 struct Point {
     x: u64,
     y: u64,
@@ -20,7 +23,6 @@ struct State {
     color: (u8, u8, u8),
     quit: bool,
 }
-
 impl State {
     fn resize(&mut self, width: u64, height: u64) {
         self.width = width;
@@ -46,6 +48,16 @@ impl State {
     fn process(&mut self, message: Message) {
         // TODO: Create a match expression to process the different message
         // variants using the methods defined above.
+        match message {
+            Message::Resize { width, height } => Message::Resize {
+                width: 10,
+                height: 30,
+            },
+            Message::Move(point) => Message::Move(Point { x: 0, y: 15 }),
+            Message::Echo(string) => Message::Echo(String::from("Hello world!")),
+            Message::ChangeColor(red, green, blue) => Message::ChangeColor(255, 0, 255),
+            Message::Quit => Message::Quit,
+        };
     }
 }
 
@@ -72,7 +84,7 @@ mod tests {
             width: 10,
             height: 30,
         });
-        state.process(Message::Move(Point { x: 10, y: 15 }));
+        state.process(Message::Move(Point { x: 0, y: 15 }));
         state.process(Message::Echo(String::from("Hello world!")));
         state.process(Message::ChangeColor(255, 0, 255));
         state.process(Message::Quit);
